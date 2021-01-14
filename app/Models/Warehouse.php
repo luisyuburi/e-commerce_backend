@@ -35,8 +35,11 @@ class Warehouse extends Model
         'name', 'location'
     ];
 
-    public function Products () {
-        return $this->hasMany(Product::class);
-    }
+  // Relacion muchos a muchos
+  public function products() {
+
+    return $this->belongsToMany(Product::class);
+
+}
 
 }

@@ -10,15 +10,15 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\API\BaseController as BaseController;
 
-use App\Models\Product;
+use App\Models\Warehouse;
 
 use Validator;
 
-use App\Http\Resources\Product as ProductResource;
+use App\Http\Resources\Warehouse as WarehouseResource;
 
 
 
-class ProductController extends BaseController
+class WarehouseController extends BaseController
 
 {
 
@@ -36,11 +36,11 @@ class ProductController extends BaseController
 
     {
 
-        $products = Product::with(["warehouse"])->get();
+        $warehouses = Warehouse::with(["products"])->get();
 
 
 
-        return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
+        return $this->sendResponse(WarehouseResource::collection($warehouses), 'warehouses retrieved successfully.');
 
     }
 
@@ -68,13 +68,7 @@ class ProductController extends BaseController
 
             'name' => 'required',
 
-            'price' => 'required',
-
-            'stock' => 'required',
-
-            'shortDesc' => 'required',
-
-            'description' => 'required',
+            'location' => 'required',
 
 
         ]);
@@ -91,11 +85,11 @@ class ProductController extends BaseController
 
 
 
-        $product = Product::create($input);
+        $warehouse = Warehouse::create($input);
 
 
 
-        return $this->sendResponse(new ProductResource($product), 'Product created successfully.');
+        return $this->sendResponse(new WarehouseResource($warehouse), 'Warehouse created successfully.');
 
     }
 
@@ -117,19 +111,19 @@ class ProductController extends BaseController
 
     {
 
-        $product = Product::with(["warehouse"])->find($id);
+        $warehouse = Warehouse::with(["products"])->find($id);
 
 
 
-        if (is_null($product)) {
+        if (is_null($warehouse)) {
 
-            return $this->sendError('Product not found.');
+            return $this->sendError('Warehouse not found.');
 
         }
 
 
 
-        return $this->sendResponse($product, 'Product retrieved successfully.');
+        return $this->sendResponse(new WarehouseResource($warehouse), 'Warehouse retrieved successfully.');
 
     }
 
@@ -149,7 +143,7 @@ class ProductController extends BaseController
 
      */
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Warehouse $warehouse)
 
     {
 
@@ -161,13 +155,9 @@ class ProductController extends BaseController
 
             'name' => 'required',
 
-            'price' => 'required',
+            'location' => 'required',
 
-            'stock' => 'required',
 
-            'shortDesc' => 'required',
-
-            'description' => 'required'
 
         ]);
 
@@ -183,23 +173,19 @@ class ProductController extends BaseController
 
 
 
-        $product->name = $input['name'];
+        $warehouse->name = $input['name'];
 
-        $product->price = $input['price'];
-
-        $product->stock = $input['stock'];
-
-        $product->shortDesc = $input['shortDesc'];
-
-        $product->description = $input['description'];
+        $warehouse->location = $input['location'];
 
 
 
-        $product->save();
+
+
+        $warehouse->save();
 
 
 
-        return $this->sendResponse(new ProductResource($product), 'Product updated successfully.');
+        return $this->sendResponse(new WarehouseResource($warehouse), 'Warehouse updated successfully.');
 
     }
 
@@ -217,15 +203,15 @@ class ProductController extends BaseController
 
      */
 
-    public function destroy(Product $product)
+    public function destroy(Warehouse $warehouse)
 
     {
 
-        $product->delete();
+        $warehouse->delete();
 
 
 
-        return $this->sendResponse([], 'Product deleted successfully.');
+        return $this->sendResponse([], 'Warehouse deleted successfully.');
 
     }
 

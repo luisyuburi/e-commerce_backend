@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 
 
-class Product extends JsonResource
+class Warehouse extends JsonResource
 
 {
 
@@ -37,15 +37,10 @@ class Product extends JsonResource
 
             'name' => $this->name,
 
-            'price' => $this->price,
+            'location' => $this->location,
 
-            'stock' => $this->stock,
+            'products' => $this->products,
 
-            'shortDesc' => $this->shortDesc,
-
-            'description' => $this->description,
-
-            'warehouse' => $this->warehouse,
 
             'created_at' => $this->created_at->format('d/m/Y'),
 

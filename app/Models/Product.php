@@ -36,7 +36,14 @@ class Product extends Model
 
     ];
 
-    public function Warehouse () {
-        return $this->belongsTo(Warehouse::class);
+
+
+    // Relacion muchos a muchos
+    public function warehouse() {
+
+        return $this->belongsToMany(Warehouse::class);
+
     }
+
 }
+

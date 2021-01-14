@@ -13,6 +13,8 @@ use App\Http\Controllers\API\RegisterController;
 
 use App\Http\Controllers\API\ProductController;
 
+use App\Http\Controllers\API\WarehouseController;
+
 
 
 /*
@@ -46,5 +48,7 @@ Route::post('login', [RegisterController::class, 'login']);
 // Route::middleware('auth:api')->group( function () {
 
     Route::resource('products', ProductController::class);
+    Route::resource('warehouses', WarehouseController::class);
+
 
 // });
