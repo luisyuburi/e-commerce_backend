@@ -35,7 +35,7 @@ Route::post('login', [RegisterController::class, 'login']);
 
 
 
-Route::middleware('auth:api')->group( function () {
+Route::middleware(':api')->group( function () {
 
     Route::resource('products', ProductController::class);
 

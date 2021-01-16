@@ -20,7 +20,163 @@ use App\Http\Resources\Warehouse as WarehouseResource;
 
 class WarehouseController extends BaseController
 
+
 {
+
+ /**
+     * @OA\Post(
+     ** path="/warehouses",
+     *   tags={"Warehouse"},
+     *   summary="Add a warehouse",
+     *   operationId="register",
+     *
+     *   @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *
+     *   @OA\Parameter(
+     *      name="location",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *
+     *   @OA\Response(
+     *      response=200,
+     *       description="Warehouse created successfully.",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *)
+     *
+     *
+     * @OA\Patch(
+     ** path="/warehouses/:id",
+     *   tags={"Warehouse"},
+     *   summary="Update a warehouse",
+     *   operationId="update-warehouse",
+     *
+     *   @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *
+     *   @OA\Parameter(
+     *      name="location",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *
+     *   @OA\Response(
+     *      response=200,
+     *       description="Warehouse updated successfully.",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *)
+     *
+     * @OA\Get(
+     ** path="/warehouses",
+     *   tags={"Warehouse"},
+     *   summary="List the warehouses",
+     *   operationId="list-warehouses",
+     *
+     * @OA\Response(
+     *      response=200,
+     *       description="Warehouses retrieved successfully.",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     * )
+     *
+     *      * @OA\Get(
+     ** path="/warehouses/:id",
+     *   tags={"Warehouse"},
+     *   summary="Get warehouse by ID",
+     *   operationId="get-warehouses-by-id",
+     *
+     * @OA\Response(
+     *      response=200,
+     *       description="Warehouse retrieved successfully",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *
+     * )
+     *
+     *
+     * @OA\Delete(
+     ** path="/warehouses",
+     *   tags={"Warehouse"},
+     *   summary="Delete a warehouse",
+     *   operationId="delete-warehouse",
+     *
+     *      * @OA\Response(
+     *      response=200,
+     *       description="Warehouses deleted successfully.",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *  )
+     *
+     *    @OA\Post(
+     ** path="/attach",
+     *   tags={"Warehouse"},
+     *   summary="Attach a product with a warehouse",
+     *   operationId="attach-product-with-warehouse",
+     *
+     *     @OA\Response(
+     *      response=200,
+     *       description="Products attached successfully.",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *
+     *
+     * )
+     *
+     *
+     *       @OA\Post(
+     ** path="/detach",
+     *   tags={"Warehouse"},
+     *   summary="Detach a product with a warehouse",
+     *   operationId="detach-product-with-warehouse",
+     *
+     *     @OA\Response(
+     *      response=200,
+     *       description="Products detached successfully.",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *
+     *
+     * )
+     *
+     *
+     *
+     *
+     */
 
     /**
 
@@ -36,11 +192,11 @@ class WarehouseController extends BaseController
 
     {
 
-        $warehouses = Warehouse::with(["products"])->get();
+        $warehouses = Warehouse::all();
 
 
 
-        return $this->sendResponse(WarehouseResource::collection($warehouses), 'warehouses retrieved successfully.');
+        return $this->sendResponse(($warehouses), 'warehouses retrieved successfully.');
 
     }
 
@@ -214,5 +370,78 @@ class WarehouseController extends BaseController
         return $this->sendResponse([], 'Warehouse deleted successfully.');
 
     }
+
+    public function attach(Request $request) {
+
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+
+            'warehouseid' => 'required',
+
+            'productid' => 'required',
+
+
+
+        ]);
+
+        $warehouseid = $input["warehouseid"];
+        $productid = $input["productid"];
+
+
+        $warehouse = Warehouse::with(["products"])->find($warehouseid);
+
+
+
+        if (is_null($warehouse)) {
+
+            return $this->sendError('Warehouse not found.');
+
+        }
+
+        $attach = $warehouse->products()->syncWithoutDetaching($productid);
+
+        return $this->sendResponse($attach, 'Product attached to warehouse successfully.');
+
+
+    }
+
+    public function detach(Request $request) {
+
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+
+            'warehouseid' => 'required',
+
+            'productid' => 'required',
+
+
+
+        ]);
+
+        $warehouseid = $input["warehouseid"];
+        $productid = $input["productid"];
+
+
+        $warehouse = Warehouse::with(["products"])->find($warehouseid);
+
+
+
+        if (is_null($warehouse)) {
+
+            return $this->sendError('Warehouse not found.');
+
+        }
+
+        $detach = $warehouse->products()->detach($productid);
+
+        return $this->sendResponse($detach, 'Product detached to warehouse successfully.');
+
+
+    }
+
+
+
 
 }

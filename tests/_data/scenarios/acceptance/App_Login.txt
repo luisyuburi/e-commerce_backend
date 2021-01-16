@@ -1,0 +1,8 @@
+I WANT TO LOGIN TO MY APP
+
+I am on page ""/login"" 
+I fill field ""#email""," "pedro@ejemplo.com"" 
+I fill field ""#password""," "123456"" 
+I click ""submit"" 
+I see ""Dashboard""
+

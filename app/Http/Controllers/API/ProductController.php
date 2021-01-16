@@ -21,6 +21,184 @@ use App\Http\Resources\Product as ProductResource;
 class ProductController extends BaseController
 
 {
+    /**
+     * @OA\Post(
+     ** path="/products",
+     *   tags={"Products"},
+     *   summary="Product created successfully.",
+     *   operationId="create-product",
+     *
+     *   @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *
+     *   @OA\Parameter(
+     *      name="stock",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="number"
+     *      )
+     *   ),
+     *
+     *
+     *   @OA\Parameter(
+     *      name="price",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="number"
+     *      )
+     *   ),
+     *
+     *
+     *   @OA\Parameter(
+     *      name="shortDesc",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *
+     *   @OA\Parameter(
+     *      name="description",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *
+     *
+     *   @OA\Response(
+     *      response=200,
+     *       description="Product created successfully.",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *)
+     *
+     *
+     * @OA\Patch(
+     ** path="/products/:id",
+     *   tags={"Products"},
+     *   summary="Update a product",
+     *   operationId="update-product",
+     *
+     *   @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *
+     *   @OA\Parameter(
+     *      name="stock",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="number"
+     *      )
+     *   ),
+     *
+     *
+     *   @OA\Parameter(
+     *      name="price",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="number"
+     *      )
+     *   ),
+     *
+     *
+     *   @OA\Parameter(
+     *      name="shortDesc",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *
+     *   @OA\Parameter(
+     *      name="description",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *
+     *   @OA\Response(
+     *      response=200,
+     *       description="Product updated successfully.",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *)
+     *
+     * @OA\Get(
+     ** path="/products",
+     *   tags={"Products"},
+     *   summary="List the products",
+     *   operationId="list-products",
+     *
+     * @OA\Response(
+     *      response=200,
+     *       description="Products retrieved successfully.",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     * )
+     *
+     *      * @OA\Get(
+     ** path="/products/:id",
+     *   tags={"Products"},
+     *   summary="Get product by ID",
+     *   operationId="get-warehouses-by-id",
+     *
+     * @OA\Response(
+     *      response=200,
+     *       description="Producte retrieved successfully",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *
+     * )
+     *
+     *
+     * @OA\Delete(
+     ** path="/products/:id",
+     *   tags={"Products"},
+     *   summary="Delete a product",
+     *   operationId="delete-warehouse",
+     *
+     *      * @OA\Response(
+     *      response=200,
+     *       description="Product deleted successfully.",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   )
+     *  )
+     *
+     *
+     *
+     *
+     */
 
     /**
 
@@ -36,11 +214,11 @@ class ProductController extends BaseController
 
     {
 
-        $products = Product::with(["warehouse"])->get();
+        $products = Product::all();
 
 
 
-        return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
+        return $this->sendResponse(($products), 'Products retrieved successfully.');
 
     }
 

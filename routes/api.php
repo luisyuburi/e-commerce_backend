@@ -49,6 +49,10 @@ Route::post('login', [RegisterController::class, 'login']);
 
     Route::resource('products', ProductController::class);
     Route::resource('warehouses', WarehouseController::class);
+    Route::post('warehouses/attach', [WarehouseController::class, "attach"]);
+    Route::post('warehouses/detach', [WarehouseController::class, "detach"]);
+
+
 
 
 // });

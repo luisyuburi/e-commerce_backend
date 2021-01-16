@@ -52,7 +52,5 @@ class Product extends JsonResource
             'updated_at' => $this->updated_at->format('d/m/Y'),
 
         ];
-
     }
-
 }
